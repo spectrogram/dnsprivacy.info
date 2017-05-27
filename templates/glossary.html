@@ -1,0 +1,59 @@
+<html>
+  <head>
+    <title>The DNS Privacy Page</title>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <link rel="shortcut icon" type="image/png" href="{{ redirecturl }}/favicon16.png"/>
+    <link rel="shortcut icon" type="image/png" href="{{ redirecturl }}/favicon32.png"/>
+    <script type="text/javascript">
+    $(document).ready(function(){
+        $('[data-toggle="popover"]').popover({
+            html : true
+        });
+    });
+    </script>
+  </head>
+  <body>
+    <div class="col-md-2">
+    </div>
+    <div class="col-md-8">
+        <h2 id="qname">QNAME Minimisation</h2>
+        <p>Query Name minimisation, simply known as QNAME minimisation, is an experimental DNS feature that aims to reduce the amount of data sent in each DNS query. It is detailed in <a href="https://www.rfc-editor.org/rfc/rfc7816.txt">RFC 7816</a>.</p>
+        <p>Currently, the full domain name being resolved is sent in each DNS query without regard for what the receiving party is capable of answering. Take the following diagram as an example:</p>
+
+        <div class="text-center">
+        <figure class="figure">
+          <img src="/static/dns.png" class="img-fluid" alt="The DNS query process without QNAME minimisation">
+          <figcaption class="figure-caption">The DNS query process without QNAME minimisation.</figcaption>
+        </figure>
+        </div>
+        
+        <br><p>Note that the full domain <code>google.com</code> is sent by the resolver to all answering authoritative servers. The authoritative servers are receiving much more data than they need to answer the query - the <code>.</code> (root) nameserver only needs to receive the <code>.com</code> part of the domain to return a correct answer.</p>
+        <p>The reason why this is done is largely historical; in the early Internet, root nameservers often also served as the nameservers for the <code>.com</code> domain - by including the entire name, the number of queries that had to be sent was reduced. The situation is very different now with the root nameservers run independently from top-level domain nameservers.</p>
+        <p>With QNAME minimisation, we send only what is needed by each nameserver to answer the query. Here's an example:</p>
+
+        <div class="text-center">
+        <figure class="figure">
+          <img src="/static/dnsqnamemin.png" class="img-fluid" alt="The DNS query process with QNAME minimisation">
+          <figcaption class="figure-caption">The DNS query process with QNAME minimisation.</figcaption>
+        </figure>
+        </div>
+        
+        <br><p>While this has an overall net effect of reducing the amount of data available to eavesdroppers from each query, it does not benefit the end user unless they are using a recursive resolver on their own network, or on their own machine. Eavesdroppers situated between a user and a resolver external to their network will still be able to discover the full name from the query the user sends to the resolver.</p>
+
+        <p>Not all resolver software packages support QNAME minimisation; <a href="http://unbound.net/">unbound</a> supports sending and receiving queries with minimised QNAMEs, while <a href="http://www.bind9.net/">BIND9</a> is yet to support it.</p>
+
+        <h2 id="dnsdtls">DNS-over-(D)TLS</h2>
+        <p>SSL (Secure Sockets Layer) and its successor <a href="https://en.wikipedia.org/wiki/Transport_Layer_Security">TLS (Transport Layer Security)</a> are widely utilised across the Internet to provide server and client authentication, data encryption and data integrity. You may recognise it as the S in HTTPS (secure HTTP). It typically runs on top of a <em>reliable transport protocol</em> (such as <a href="https://en.wikipedia.org/wiki/Transmission_Control_Protocol">TCP</a>) and facilitates a secure connection between client and server by introducing a handshake during which cryptographic details are negotiated between the two parties; these details are then used to secure the connection and prevent eavesdropping by encrypting the data transferred over the connection.</p>
+        <p>As TLS is widely implemented, it is a prime candidate protocol for securing the DNS query/answer process. A secure connection between the user and their recursive resolver makes it very hard for attackers to eavesdrop on queries. A resolver can also use TLS to encrypt connections to authoritative servers. Unfortunately, as with all things security related, there is no free lunch: enhanced security almost always comes with a cost.</p>
+        <p>Currently, DNS packets are sent using <a href="https://en.wikipedia.org/wiki/User_Datagram_Protocol">UDP (User Datagram Protocol)</a>. UDP is an <em>unreliable</em> transport protocol that you can think of as being similar to regular snail mail; no initial connection is set up between the two parties, and senders of UDP packets (datagrams) do not know whether the packet has arrived at the destination until the receiver sends a reply. Compare this to TCP, where connections are set up beforehand with a handshake, and each packet sent to the receiver is acknowledged as soon as it's received - failure to do so prompts the sender to resend the packet.</p>
+        <p>UDP is the preferred protocol for DNS packets as it doesn't require a time-consuming handshake process to set up a connection, and DNS packets themselves are relatively small - the protocol hardly requires the reliability that TCP provides. UDP also expends less server resources than TCP, as connection state must be kept for the latter.</p>
+        <p>Because of the differences in transport, a transition to DNS-over-TLS would be quite a departure from the current status quo, but also a huge step forward for the privacy of the client. Currently, <a href="https://getdnsapi.net/">getdns</a> and <a href="http://unbound.net/">unbound</a> are the only resolver software packages that support DNS-over-TLS. The specification for the protocol itself is found in <a href="https://www.rfc-editor.org/rfc/rfc7858.txt">RFC 7858</a>. Port 853 is designated the well-known port for DNS-over-TLS.</p>
+        <p><a href="https://en.wikipedia.org/wiki/Datagram_Transport_Layer_Security">DTLS (Datagram Transport Layer Security)</a> provides security for unreliable protocols that utilise datagrams as transport. While not as widely used as TLS, it is a promising alternative. No software packages currently implement DNS-over-DTLS. <a href="https://www.rfc-editor.org/rfc/rfc8094.txt">RFC 8094</a> details the protocol.</p>
+
+    </div>
+  </body>
+
+
+ </html>

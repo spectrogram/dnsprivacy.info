@@ -1,0 +1,186 @@
+<html>
+   <head>
+      <title>DNS Oracle</title>
+      <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+      <link rel="shortcut icon" type="image/png" href="{{ redirecturl }}/favicon16.png"/>
+      <link rel="shortcut icon" type="image/png" href="{{ redirecturl }}/favicon32.png"/>
+      <script type="text/javascript">
+      $(document).ready(function(){
+          $('[data-toggle="popover"]').popover({
+              html : true
+          });
+      });
+      </script>
+   </head>
+   
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">DNS Privacy</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li><a href="/primer">Primer</a></li>
+        <li class="active"><a href="/oracle">Oracle<span class="sr-only">(current)</span></a></li>
+        <li><a href="/glossary">Glossary</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/about">About</a></li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+
+
+   <body>
+      <div class="container-fluid">
+         <div class="row">
+            <div class="col-md-2">
+            </div>
+            <div class="col-md-8">
+               <div class="page-header">
+                 <h1>DNS Oracle <small><img src="{{ redirecturl }}/static/1by1.png"></small></h1>
+               </div>
+
+               {% if whois_name == None %}
+               <div class="jumbotron">
+                 <h2>Your resolver appears to be <b>{{ clientresolver }}</b></h2>
+                 <p>Operator: {{ resolver.operator|default_if_none:"" }} <img src="{{ resolver.country.flag }}"></small></p>
+                 <p>Resolver name: {{ resolver.resolver_name|default_if_none:"" }}</p>
+                 <p>Other IPs: {{ resolver.ips|default_if_none:"" }}</p>
+               </div>
+               {% else %}               
+               <div class="jumbotron">
+                 <h2>Your resolver appears to be <strong>{{ clientresolver }}</strong> ({{ whois_name }})</h2>
+               </div>
+               {% endif %}
+
+               <div class="alert alert-info" role="alert"><p>Your resolver isn't publicly accessible, so some of the information below may be outdated. <a href= "/oracle/poll" class="alert-link">Click here to take a 1-minute survey to help us stay up-to-date.</a></p></div>
+
+               <table class="table">
+                  <thead>
+                     <tr>
+                        <th>
+                           Category
+                        </th>
+                        <th>
+                           Attribute
+                        </th>
+                        <th>
+                           Status
+                        </th>
+                        <th>
+                           Notes
+                        </th>
+                     </tr>
+                  </thead>
+                  <tbody>
+
+                     <tr> 
+                        <th rowspan="3" class="active">Integrity</th>
+                        <td {% if resolver.dnssec %} class="success" 
+                            {% elif resolver.dnssec_details|length > 0 and not resolver.dnssec %} class="warning" 
+                            {% else %} class="danger" 
+                            {% endif %}>
+                           <a tabindex="0" role="button" data-toggle="popover" data-trigger="focus" title="" data-content="DNSSEC validates DNS responses and ensures that they aren't tampered with. Forged DNS responses are both a privacy and security risk as they may take you to websites that steal your information. For more information click <a href='https://en.wikipedia.org/wiki/Domain_Name_System_Security_Extensions' title=''>here.</a>" data-original-title="DNSSEC">DNSSEC</a>
+                        </td>
+                        <td {% if resolver.dnssec %} class="success" 
+                            {% elif resolver.dnssec_details|length > 0 and not resolver.dnssec %} class="warning" 
+                            {% else %} class="danger" 
+                            {% endif %}>
+                           {% if resolver.dnssec %} Supported {% else %} Not supported {% endif %}
+                        </td>
+                        <td {% if resolver.dnssec %} class="success" {% elif resolver.dnssec_details|length > 0 and not resolver.dnssec %} class="warning" {% else %}  class="danger" {% endif %}>
+                           <em>{{ resolver.dnssec_details }}</em>
+                        </td>
+                     </tr>
+
+                     <tr> 
+                        <td {% if resolver.censorship %} class="danger" {% elif resolver.censorship_details|length > 0 and resolver.censorship %} class="warning" {% else %}  class="success" {% endif %}>
+                           <a tabindex="0" role="button" data-toggle="popover" data-trigger="focus" title="" data-content="DNS servers are sometimes used to implement Internet censorship laws imposed by governments or courts. When a website is censored using the DNS, the DNS response for its domain will redirect you to another destination." data-original-title="Censorship">Censorship</a>
+                        </td>
+                        <td {% if resolver.censorship %} class="danger" {% elif resolver.censorship_details|length > 0 and resolver.censorship %} class="warning" {% else %}  class="success" {% endif %}>
+                           {% if resolver.censorship %} Censors results {% else %} Does not censor results {% endif %}
+                        </td>
+                        <td {% if resolver.censorship %} class="danger" {% elif resolver.censorship_details|length > 0 and resolver.censorship %} class="warning" {% else %}  class="success" {% endif %}>
+                           <em>{{ resolver.censorship_details }}</em>
+                        </td>
+                     </tr>
+
+                     <tr> 
+                        <td {% if resolver.ads %} class="danger" {% else %}  class="success" {% endif %}>
+                           <a tabindex="0" role="button" data-toggle="popover" data-trigger="focus" title="Advertising" data-content="Some resolvers may subsidise their costs of operation by redirecting you to advertising if a domain cannot be found using the DNS (known as an NXDOMAIN error). This can be dangerous as applications expecting an NXDOMAIN response will connect instead to the website serving the advertising.">Advertising</a>
+                        </td>
+                        <td {% if resolver.ads %} class="danger" {% else %}  class="success" {% endif %}>
+                           {% if resolver.ads %} Redirects to ads {% else %} Does not redirect to ads {% endif %}
+                        </td>
+                        <td {% if resolver.ads %} class="danger" {% else %}  class="success" {% endif %}>
+                           <em>{{ resolver.ads_details }}</em>
+                        </td>
+                     </tr>
+
+                     <tr> 
+                        <th rowspan="3" class="active">Confidentiality</th>
+                        <td {% if resolver.tos %} class="warning" {% else %}  class="success" {% endif %}>
+                           <a tabindex="0" role="button" data-toggle="popover" data-trigger="focus" title="Terms of Service gotchas" data-content="Some resolvers will have Terms of Service or privacy policies that you must abide by when using their services. These terms may describe how your data is logged and used.">Terms of Service gotchas</a>
+                        </td>
+                        <td {% if resolver.tos %} class="warning" {% else %}  class="success" {% endif %}>
+                           {% if resolver.tos %} Concerning {% else %} OK {% endif %}
+                        </td>
+                        <td {% if resolver.tos %} class="warning" {% else %}  class="success" {% endif %}>
+                           <em>{{ resolver.tos_details }}</em>
+                        </td>
+                     </tr>
+
+                     <tr> 
+                        <td {% if qnamemin %} class="success" {% else %}  class="danger" {% endif %}>
+                           <a href="http://dnsprivacy.info/glossary/#qname">QNAME Minimisation</a>
+                        </td>
+                        <td {% if qnamemin %} class="success" {% else %}  class="danger" {% endif %}>
+                           {% if qnamemin %} Supported {% else %} Not supported {% endif %}
+                        </td>
+                        <td {% if qnamemin %} class="success" {% else %}  class="danger" {% endif %}>
+                           <em>{{ resolver.qnamemin_details }}</em>
+                        </td>
+                     </tr>
+
+                     <tr> 
+                        <td {% if resolver.tls %} class="success" {% else %}  class="danger" {% endif %}>
+                           <a href="http://dnsprivacy.info/glossary/#dnsdtls">DNS-over-(D)TLS</a>
+                        </td>
+                        <td {% if resolver.tls %} class="success" {% else %}  class="danger" {% endif %}>
+                           {% if resolver.tls %} Supported {% else %} Not supported {% endif %}
+                        </td>
+                        <td {% if resolver.tls %} class="success" {% else %}  class="danger" {% endif %}>
+                           <em>{{ resolver.tls_details }}</em>
+                        </td>
+                     </tr>
+
+                  </tbody>
+               </table>
+
+               <p>Click on each attribute to learn more about it.</p>
+
+            <h3>
+               How does it work?
+            </h3>
+            <p>
+               <strong>All DNS queries for this domain and its subdomains are logged solely for the purpose of identifying which resolver you use. These logs are purged every hour.</strong> On the previous page, there was a small 1 x 1 pixel image that appeared to your web browser to be hosted at the subdomain {{ redirecturl }}. You'll notice that your IP address and port appears in the subdomain address - this allows the website to identify your resolver's DNS query from the log. 
+            </p>
+
+         </div>
+         <div class="col-md-2">
+         </div>
+
+      </div>
+   </body>
+</html>

@@ -1,0 +1,16 @@
+;;files to ignore
+settings.py
+
+;;extensions to ignore
+*.log
+*.pot
+*.pyc
+*.json
+*.zone
+*.sublime-project
+*.sublime-workspace
+
+;;directories to ignore
+static/
+migrations/
+favicon/

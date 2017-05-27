@@ -1,0 +1,72 @@
+<html>
+  <head>
+    <title>The DNS Privacy Page</title>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <link rel="shortcut icon" type="image/png" href="{{ redirecturl }}/favicon16.png"/>
+    <link rel="shortcut icon" type="image/png" href="{{ redirecturl }}/favicon32.png"/>
+    <script type="text/javascript">
+    $(document).ready(function(){
+        $('[data-toggle="popover"]').popover({
+            html : true
+        });
+    });
+    </script>
+  </head>
+  <body>
+    <div class="col-md-2">
+    </div>
+    <div class="col-md-8">
+      <h2>What is the DNS?</h2>
+      <p>The DNS (Domain Name System) is the phonebook of the Internet. It allows both humans and computers to associate an <strong><i>IP address</i></strong> like <code>172.245.179.213</code> with a <strong><i>domain name</i></strong> like <code>dnsprivacy.info</code>. You can think of this as associating a telephone number with a person. Because domain names are much easier to memorise than IP addresses, the DNS is ubiquitous and forms a core part of the Internet.</p>
+
+      <h3>How does the DNS work?</h3>
+      <p>When you enter a website's domain name (for example, <code>google.com</code>) into your web browser's address bar, your computer needs to determine where to send its data so that it can establish a connection with the website. For this, it needs an IP address, so it must use the DNS to find the IP address associated with the website.</p>
+
+      <p>Let's say you're trying to access the Google homepage at <code>google.com</code>. This domain name can be split up into two parts: <code>com</code> and <code>google</code>. First, your computer will send out a DNS query to its local DNS recursive resolver. These resolvers are servers that receive DNS queries from many clients (like your computer), and are usually operated by an Internet Service Provider (ISP) or organisation. Initially, they will try to answer your query from their cache (a temporary store of recent DNS responses). If they can't, the resolver will begin the resolution process.</p>
+
+      <p>First, the resolver will send a query to the <code>.</code> (root, or dot) nameservers (so named because they handle domain names only). The root nameserver will have the IP address for the <code>com</code> nameserver and reply to the resolver with that address. Next, the resolver will send a query to the <code>com</code> nameserver for the IP address of the <code>google</code> nameserver. Finally, the <code>google</code> nameserver will be queried by the resolver to find the webserver IP address of <code>google.com</code>.</p>
+
+      <div class="text-center">
+      <figure class="figure">
+        <img src="/static/dns.png" class="img-fluid" alt="How the DNS query process works">
+        <figcaption class="figure-caption">How the DNS query process works, using <code>google.com</code> as an example.</figcaption>
+      </figure>
+      </div>
+
+      <br><p>The main thing to remember about the DNS is that no single server (computer) anywhere in the world has knowledge of all the domains and IP addresses on the Internet. It's a distributed system, in which nameservers only possess information for their jurisdiction, or zone (as it's referred to in the DNS). If a computer outside of the network wants to know the IP address mapped to a particular domain in their zone, they would need to query the DNS nameservers for that zone. Such nameservers are referred to as the authoritative nameservers. For example, the <code>ns1.google.com</code> nameserver is authoritative for the <code>google.com</code> zone only.</p>
+
+      <h2>Privacy on the Internet</h2>
+      <p>Privacy can be defined as a claim, entitlement or right of an individual to determine what information about themselves may be communicated with others.</p>
+      <p>In recent years, the privacy of our activities on the Internet has come to the fore of civil discourse. After the establishment of a metadata retention scheme in Australia, privacy concerns were raised over the scope of the scheme and level of access given to government agencies. After <a href="https://www.theguardian.com/world/interactive/2013/nov/01/snowden-nsa-files-surveillance-revelations-decoded">Edward Snowden's disclosures in 2013</a> of pervasive surveillance by the National Security Agency (NSA) on Internet users around the world, we're now much more sensitive to how data about our browsing activities are utilised by state security agencies and commercial entities.</p>
+
+      <h2>Privacy of the DNS</h2>
+      <p>The DNS was conceived in the early 1980s by Paul Mockapetris and Jon Postel. At the time, the Internet was called the ARPANET, and only defence organisations and research institutions could access it. Privacy concerns were non-existent, so there was arguably no need to implement any privacy measures in the DNS. Because of this, the DNS protocol is unusually open with user data, and the structure of the system itself presents many opportunities for attackers.</p>
+
+      <div class="text-center">
+      <figure class="figure">
+        <img src="/static/attackers.png" class="img-fluid" alt="Possible attack locations in the DNS">
+        <figcaption class="figure-caption">Possible attack locations in the DNS.</figcaption>
+      </figure>
+      </div>
+
+      <br><p>The figure above shows possible locations in the DNS query process where an attacker could feasibly breach your privacy. Let's enumerate them:</p>
+
+      <ul>
+        <li><strong>Between your computer and your recursive resolver.</strong> An attacker eavesdropping here can conceivably deduce your entire browsing history from your DNS queries to the resolver. They can be positioned inside your network or be monitoring any network devices on the path between you and your resolver.</li>
+        <li><strong>At the recursive resolver.</strong> An attacker eavesdropping here can access all DNS queries being sent to the recursive resolver. Using this information, they can use it to profile an entire network of users.</li>
+        <li><strong>Between the recursive resolver and authoritative nameservers.</strong> This location by itself is far less informative of individual users, but can still provide an attacker with valuable information on the access patterns of a recursive resolver's users. An active attacker can also launch a <a href="https://en.wikipedia.org/wiki/DNS_spoofing">DNS cache poisoning attack</a> where the recursive resolver is fed spoofed (fake) data in response to a genuine DNS query.</li>
+        <li><strong>At the authoritative nameservers.</strong> </li>
+      </ul>
+
+      <p>Among other failings, all DNS messages are transmitted in plaintext (that is, unencrypted so anyone can read them). This is obviously undesirable: a malicious party with access to your DNS queries can easily deduce what websites you have visited on the Internet. Efforts to secure the protocol are ongoing. </p>
+
+      <h2>What is this website?</h2>
+      <p>This website aims to inform its users about the DNS, in particular its privacy aspects (or lack thereof). The DNS is usually transparent - the average Internet user has no idea of its existence, and thus are not actively considering how they can make their browsing more private. The aim of the website is to change that by raising awareness of the DNS, with a particular focus on its privacy flaws, to encourage the reader to make informed decisions regarding their use of the DNS>.</p>
+      <p>This website is part of a 4th year thesis project for an engineering degree.</p>
+    </div>
+  </body>
+
+
+ </html>

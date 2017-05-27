@@ -1,0 +1,96 @@
+<html>
+   <head>
+      <title>DNS Oracle</title>
+      <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+      <link rel="stylesheet" href="/static/custom.css">
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+      <link rel="shortcut icon" type="image/png" href="{{ redirecturl }}/static/favicon16.png"/>
+      <link rel="shortcut icon" type="image/png" href="{{ redirecturl2 }}/static/favicon32.png"/>
+   </head>
+
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">DNS Privacy</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li><a href="/primer">Primer</a></li>
+        <li class="active"><a href="/oracle">Oracle<span class="sr-only">(current)</span></a></li>
+        <li><a href="/glossary">Glossary</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/about">About</a></li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+
+   <body>
+      <div class="container-fluid">
+      <div class="col-md-2">
+      </div>
+      <div class="col-md-8">
+      <div class="page-header">
+         <h1>DNS Resolver Survey</h1>
+      </div>
+
+      <p>You are completing this survey for {{ clientresolver }} ({{ whois_name }}).</p>
+      <p><strong><mark>Images and frames on this page may take a while to load. Please allow up to 20 seconds for all assets to load before submitting.</mark></strong></p>
+      <p>Click <a href="/oracle/poll/examples">here</a> for examples of how the webpage should appear when using a resolver that passes all tests on this page.</p>
+      <hr>
+      <form action="/oracle/poll/" method="post">{% csrf_token %}
+      {{ form.name.as_hidden }}
+      <div class="row">
+         <div class="col-md-12">
+         <iframe width="100%" height="20%" src="http://dnssec-failed.org"></iframe>
+            <p><strong>Can you see the xfinity/Comcast website above?</strong></p>
+            {{ form.dnssec }} 
+            <p>Answer no if your browser shows an error (for example, it might say <em>this webpage is not available</em> or <em>server not found</em>).</p>
+         </div>
+      </div>
+      <hr>
+      <div class="row">
+         <div class="col-md-12">
+         <iframe width="100%" height="20%" src="http://efukhekehf.fe8ijkfneofj.com"></iframe>
+            <p><strong>Can you see a webpage (with any content) above?</strong></p>
+            {{ form.ads }} 
+            <p>Answer no if your browser shows an error (for example, it might say <em>this webpage is not available</em> or <em>server not found</em>).</p>
+         </div>
+      </div>
+      <hr>
+         <div class="col-md-12" align="center">
+            <img src="https://g.twimg.com/about/feature-corporate/image/twitterbird_RGB.png" class="img-responsive" width="200">
+            <p><strong>Can you see the blue Twitter bird logo above?</strong></p>
+            {{ form.censorship1 }} 
+         </div>
+      <hr>
+         <div class="col-md-12" align="center">
+            <img src="https://thepiratebay.org/static/img/tpb.jpg" class="img-responsive" width="200">
+            <p><strong>Can you see the brown Pirate Bay logo of a pirate ship above?</strong></p>
+            {{ form.censorship2 }}
+         </div>
+      <hr>
+         <div class="col-md-12" align="center">
+            <img src="http://static-hw.xvideos.com/v3/img/skins/default/xvideos.png" class="img-responsive">
+            <p><strong>Can you see the black XVideos logo above?</strong></p>
+            {{ form.censorship3 }}
+         </div>
+      <br>
+      <br>
+      <p align="center"><input type="submit" id="submission" class="btn btn-primary btn-lg" value="Submit"></button></p>
+      </form>
+      </div>
+      <div class="col-md-2">
+      </div>
+      </div>
+   </body>
+</html>

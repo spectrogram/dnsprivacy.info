@@ -1,0 +1,86 @@
+<html>
+   <head>
+      <title>The DNS Privacy Pages</title>
+      <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+      <link rel="stylesheet" href="/static/custom.css">
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+      <link rel="shortcut icon" type="image/png" href="{{ redirecturl }}/static/favicon16.png"/>
+      <link rel="shortcut icon" type="image/png" href="{{ redirecturl2 }}/static/favicon32.png"/>
+   </head>
+
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">DNS Privacy</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li><a href="/primer">Primer</a></li>
+        <li><a href="/oracle">Oracle</a></li>
+        <li><a href="/glossary">Glossary</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/about">About</a></li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+
+
+  <body>
+    <div class="col-md-2">
+    </div>
+    <div class="col-md-8">
+      <div class="page-header">
+        <h1>The DNS Privacy Pages
+        <small>
+            <img src="{{ redirecturl }}/static/1by1.png">
+            <img src="{{ redirecturl2 }}/static/1by1.png">
+        </small></h1>
+      </div>
+         <div class="panel panel-primary">
+            <div class="panel-heading">
+              <h3 class="panel-title">DNS Oracle</h3>
+            </div>
+            <div class="panel-body">
+              <p>
+                The DNS Oracle identifies your current resolver and informs you about its privacy- and security-enhancing attributes.
+              </p>
+              <a href="/oracle" class="btn btn-primary" role="button">DNS Oracle</a>
+            </div>
+          </div>
+            <div class="panel panel-info">
+            <div class="panel-heading">
+              <h3 class="panel-title">Introduction</h3>
+            </div>
+            <div class="panel-body">
+              <p>
+                What is the DNS and how does it work? Why do we need DNS privacy? Your burning questions are answered in the DNS Primer.
+              </p>
+              <a href="/primer" class="btn btn-primary" role="button">DNS Primer</a>
+            </div>
+            </div>
+            <div class="panel panel-info">
+            <div class="panel-heading">
+              <h3 class="panel-title">Glossary</h3>
+            </div>
+            <div class="panel-body">
+              <p>
+                Unsure about some of the technical jargon? Check the Glossary.
+              </p>
+              <a href="/glossary" class="btn btn-primary" role="button">Glossary</a>
+            </div>
+          </div>
+     </div>
+    <div class="col-md-2">
+    </div>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<html>
+  <head>
+    <title>The DNS Privacy Page</title>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <link rel="shortcut icon" type="image/png" href="{{ redirecturl }}/favicon16.png"/>
+    <link rel="shortcut icon" type="image/png" href="{{ redirecturl }}/favicon32.png"/>
+    <script type="text/javascript">
+    $(document).ready(function(){
+        $('[data-toggle="popover"]').popover({
+            html : true
+        });
+    });
+    </script>
+  </head>
+  <body>
+    <div class="col-md-2">
+    </div>
+    <div class="col-md-8">
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+              <h3 class="panel-title">DNS Oracle</h3>
+            </div>
+            <div class="panel-body">
+              <p>
+                The DNS Oracle identifies your current resolver and informs you about its privacy- and security-enhancing attributes.
+              </p>
+              <a href="/oracle" class="btn btn-primary" role="button">DNS Oracle</a>
+            </div>
+          </div>
+            <div class="panel panel-info">
+            <div class="panel-heading">
+              <h3 class="panel-title">Introduction</h3>
+            </div>
+            <div class="panel-body">
+              <p>
+                What is the DNS and how does it work? Why do we need DNS privacy? Your burning questions are answered in the DNS Primer.
+              </p>
+              <a href="/primer" class="btn btn-primary" role="button">DNS Primer</a>
+            </div>
+            </div>
+            <div class="panel panel-info">
+            <div class="panel-heading">
+              <h3 class="panel-title">Glossary</h3>
+            </div>
+            <div class="panel-body">
+              <p>
+                Unsure about some of the technical jargon? Check the Glossary.
+              </p>
+              <a href="/glossary" class="btn btn-primary" role="button">Glossary</a>
+            </div>
+          </div>
+    </div>
+  </body>
+
+
+ </html>
